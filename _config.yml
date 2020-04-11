@@ -1,5 +1,5 @@
-sass:
-  style: compressed
+excerpt_separator: <!--more-->
+
 
 defaults:
   -

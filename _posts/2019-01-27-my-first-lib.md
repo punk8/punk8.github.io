@@ -1,3 +1,13 @@
+```
+---
+title: 我的第一个安卓开源库，OpenSourceAboutPages
+date:  2019-01-27 13:09:13 +0800
+category: develop
+tags: android
+excerpt: 使关于界面更加简单。
+---
+```
+
 # JAVA多线程并发**
 
 1. JAVA并发知识库
