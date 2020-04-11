@@ -1,6 +1,9 @@
+---
 layout: about
 title: 关于
 reward: false
+
+---
 
  <center>Punk的学习之路</center>
 <center><img src="https://punk8.github.io/assets/img/IMG_3656.JPG" width="240" height="200"/></center>
