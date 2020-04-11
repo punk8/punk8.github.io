@@ -14,11 +14,10 @@ defaults:
     values:
       image: true
 
-title: Minimalism
-name: minimalism
-description: Minimalism is a jekyll theme for minimalist
+title: Punk
+name: Punk
+description: Punk的学习之路
 
-github: https://github.com/showzeng/Minimalism
 rss: true
 
 plugins:
