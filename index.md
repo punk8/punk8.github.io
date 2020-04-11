@@ -1,1 +1,3 @@
-## Welcome to Punk's Blog!
+---
+layout: index
+---
