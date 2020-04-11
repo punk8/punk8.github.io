@@ -1,4 +1,14 @@
-# **JAVA多线程并发**
+```
+---
+title: 2019年终总结
+date:  2019-12-31 20:59:13 +0800
+category: life
+tags: summary
+excerpt: 记录我一年的成长经历。
+---
+```
+
+# JAVA多线程并发**
 
 1. JAVA并发知识库
 2. JAVA线程实现/创建方式
