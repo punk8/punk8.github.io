@@ -37,6 +37,15 @@ copyright_time: 2020
 show_excerpt: true
 # --- 文章页 ---
 
+# --- 社交链接 ---
+# 取消下面的注解，并填写相应的你要开启的社交链接
+#twitter: https://twitter.com/showzeng
+github: https://github.com/punk8
+# 邮件地址前面带上 mailto:
+email: mailto:1041501690@qq.com
+# RSS 订阅
+rss: true
+# --- 社交链接 ---
 
 # theme: jekyll-theme-minimalism
 remote_theme: showzeng/Minimalism
