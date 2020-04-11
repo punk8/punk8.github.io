@@ -1,0 +1,215 @@
+# **JAVA多线程并发**
+
+1. JAVA并发知识库
+2. JAVA线程实现/创建方式
+3. 4种线程池
+4. 线程生命周期(状态)
+5. 终止线程4种方式
+6. sleep与wait 区别
+7. start与run区别
+8. JAVA后台线程
+9. JAVA锁
+10. 线程基本方法4.1.11. 线程上下文切换
+11. 同步锁与死锁
+12. 线程池原理
+13. JAVA阻塞队列原理
+14. CyclicBarrier、CountDownLatch、Semaphore的用法
+15. volatile关键字的作用（变量可见性、禁止重排序）
+16. 如何在两个线程之间共享数据
+
+![img](https://mmbiz.qpic.cn/sz_mmbiz_jpg/1dzmicmcARCNZg6r9KMaqDxLIcCnzq8T9qKIKV6iarWuznxE2ChEB8aFuLXibXYFWBF0J6aj8AibsJFibDDBR7EtHTQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+
+---
+
+通过继承Thread类实现多线程：
+
+优点：
+
+1、实现起来简单，而且要获取当前线程，无需调用Thread.currentThread()方法，直接使用this即可获取当前线程；
+
+缺点：
+
+1、线程类已经继承Thread类了，就不能再继承其他类；
+
+2、多个线程不能共享同一份资源（如前面分析的成员变量 i ）；
+
+通过实现Runnable接口或者Callable接口实现多线程：
+
+优点：
+
+1、线程类只是实现了接口，还可以继承其他类；
+
+2、多个线程可以使用同一个target对象，适合多个线程处理同一份资源的情况。
+
+缺点：
+
+1、通过这种方式实现多线程，相较于第一类方式，编程较复杂；
+
+2、要访问当前线程，必须调用Thread.currentThread()方法。
+
+---
+
+1. Executors.newCachedThreadPool
+2. Executors.newFixedThreadPool
+3. Executors.newScheduledThreadPool
+4. Executors.newSingleThreadExecutor
+
+```java
+        //可以无限大的线程数量
+        ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
+        System.out.println("******************newCachedThreadPool******************");
+        for (int i = 0;i<4;i++){
+            final int index = i;
+            newCachedThreadPool.execute(new ThreadForPools(index));
+        }
+
+        //固定线程数目
+        ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(2);
+        System.out.println("******************newFixedThreadPool******************");
+        for (int i = 0;i<4;i++){
+            final int index = i;
+            newFixedThreadPool.execute(new ThreadForPools(index));
+        }
+        //定时
+        ScheduledExecutorService newScheduledThreadPool = Executors.newScheduledThreadPool(2);
+        System.out.println("******************newScheduledThreadPool******************");
+        for (int i = 0;i<4;i++){
+            final int index = i;
+            newScheduledThreadPool.schedule(new ThreadForPools(index),3, TimeUnit.SECONDS);
+        }
+        //定时
+        ExecutorService newSingleThreadExecutor = Executors.newSingleThreadExecutor();
+        System.out.println("******************newSingleThreadExecutor******************");
+        for (int i = 0;i<4;i++){
+            final int index = i;
+            newSingleThreadExecutor.execute(new ThreadForPools(index));
+        }
+        newSingleThreadExecutor.shutdown();
+         创建数组型缓冲等待队列
+        2、当调用 execute() 方法添加一个任务时，线程池会做如下判断：
+    a. 如果正在运行的线程数量小于 corePoolSize，那么马上创建线程运行这个任务；
+    b. 如果正在运行的线程数量大于或等于 corePoolSize，那么将这个任务放入队列。
+    c. 如果这时候队列满了，而且正在运行的线程数量小于 maximumPoolSize，那么还是要创建线程运行这个任务；
+    d. 如果队列满了，而且正在运行的线程数量大于或等于 maximumPoolSize，那么线程池会抛出异常，告诉调用者“我不能再接受任务了”。
+           BlockingQueue<Runnable> bq = new ArrayBlockingQueue<Runnable>(6);
+        // ThreadPoolExecutor:创建自定义线程池，池中保存的线程数为3，允许最大的线程数为6
+        ThreadPoolExecutor tpe = new ThreadPoolExecutor(3, 6, 50, TimeUnit.MILLISECONDS, bq);
+
+
+        for (int i=0;i<10;i++){
+            final int index = i;
+            tpe.execute(new ThreadForPools(index));
+        }
+
+        tpe.shutdown();
+```
+
+五种常用线程池：
+
+1、newCachedThreadPool：内部使用SynchronousQueue
+
+2、newFixedThreadPool：内部使用
+
+3、newScheduledThreadPool：内部使用DelayedWorkQueue**``**
+
+4、newSingleThreadExecutor
+
+5、new ThreadPoolExecutor();//默认线程池，可控制参数比较多
+
+三种阻塞队列：
+  BlockingQueue<Runnable> workQueue = null;
+  workQueue = new ArrayBlockingQueue<>(5);//基于数组的先进先出队列，有界
+  workQueue = new LinkedBlockingQueue<>();//基于链表的先进先出队列，无界
+  workQueue = new SynchronousQueue<>();//无缓冲的等待队列，无界
+
+四种拒绝策略：
+  RejectedExecutionHandler rejected = null;
+  rejected = new ThreadPoolExecutor.AbortPolicy();//默认，队列满了丢任务抛出异常
+  rejected = new ThreadPoolExecutor.DiscardPolicy();//队列满了丢任务不异常
+  rejected = new ThreadPoolExecutor.DiscardOldestPolicy();//将最早进入队列的任务删，之后再尝试加入队列
+  rejected = new ThreadPoolExecutor.CallerRunsPolicy();//如果添加到线程池失败，那么主线程会自己去执行该任务
+
+----
+
+ThreadPoolExecutor的参数
+
+```java
+int corePoolSize, // 1
+int maximumPoolSize,  // 2
+long keepAliveTime,  // 3
+TimeUnit unit,  // 4
+BlockingQueue<Runnable> workQueue, // 5
+ThreadFactory threadFactory,  // 6
+RejectedExecutionHandler handler
+```
+
+----
+
+| 名称            | 类型                     | 含义             |
+| --------------- | ------------------------ | ---------------- |
+| corePoolSize    | int                      | 核心线程池大小   |
+| maximumPoolSize | int                      | 最大线程池大小   |
+| keepAliveTime   | long                     | 线程最大空闲时间 |
+| unit            | TimeUnit                 | 时间单位         |
+| workQueue       | BlockingQueue<Runnable>  | 线程等待队列     |
+| threadFactory   | ThreadFactory            | 线程创建工厂     |
+| handler         | RejectedExecutionHandler | 拒绝策略         |
+
+---
+
+newFixedThreadPool缺点
+
+因为采用linkedBlockingQueue无界阻塞队列，可能在拒绝策略之前就内存溢出
+
+newSingleThreadExecutor相当于newFixedThreadPool多一层FinalizableDelegatedExecutorService包装，避免向下转型成ThreadPoolExecutor然后进行线程配置
+
+---
+
+**interrupt() 它基于「一个线程不应该由其他线程来强制中断或停止，而是应该由线程自己自行停止。」思想，是一个比较温柔的做法，它更类似一个标志位。其实作用不是中断线程，而是「通知线程应该中断了」，具体到底中断还是继续运行，应该由被通知的线程自己处理。**
+
+**interrupt() 并不能真正的中断线程，这点要谨记。需要被调用的线程自己进行配合才行。也就是说，一个线程如果有被中断的需求，那么就需要这样做：**
+
+1. 在正常运行任务时，经常检查本线程的中断标志位，如果被设置了中断标志就自行停止线程。
+2. 在调用阻塞方法时正确处理InterruptedException异常。（例如：catch异常后就结束线程。）
+
+
+
+**首先讲 interrupt() 方法：**
+
+1. interrupt 中断操作时，非自身打断需要先检测是否有中断权限，这由jvm的安全机制配置；
+2. 如果线程处于sleep, wait, join 等状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常；
+3. 如果线程处于I/O阻塞状态，将会抛出ClosedByInterruptException（IOException的子类）异常；
+4. 如果线程在Selector上被阻塞，select方法将立即返回；
+5. 如果非以上情况，将直接标记 interrupt 状态；
+
+注意：interrupt 操作不会打断所有阻塞，只有上述阻塞情况才在jvm的打断范围内，如处于锁阻塞的线程，不会受 interrupt 中断；
+
+**阻塞情况下中断，抛出异常后线程恢复非中断状态，即 interrupted = false**
+
+
+
+---
+
+**线程终止方式**
+
+- 使用标志位退出线程
+- 使用stop方法强制终止线程
+- 使用interrupt终止线程
+
+
+
+---
+
+**线程状态**
+
+new -> runnable->running->blocked->dead
+
+runnable：start后
+
+running：cpu分配时间片后 执行run()
+
+blocked：
+
+(一). 等待阻塞：运行(running)的线程执行o.wait()方法，JVM会把该线程放入等待队列(waitting queue)中。
+(二). 同步阻塞：运行(running)的线程在获取对象的同步锁时，若该同步锁被别的线程占用，则JVM会把该线程放入锁池(lock pool)中。
+(三). 其他阻塞：运行(running)的线程执行Thread.sleep(long ms)或t.join()方法，或者发出了I/O请求时，JVM会把该线程置为阻塞状态。当sleep()状态超时、join()等待线程终止或者超时、或者I/O处理完毕时，线程重新转入可运行(runnable)状态。

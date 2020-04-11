@@ -18,7 +18,11 @@ title: Punk
 name: Punk
 description: Punk的学习之路
 
-rss: true
+
+copyright_time: 2020
+
+show_excerpt: true
+
 
 plugins:
   - rouge
