@@ -1,10 +1,10 @@
 ```
 ---
-title: 2019年终总结
-date:  2019-12-31 20:59:13 +0800
-category: life
-tags: summary
-excerpt: 记录我一年的成长经历。
+title: 我的第一个安卓开源库，OpenSourceAboutPages
+date:  2019-01-27 13:09:13 +0800
+category: develop
+tags: android
+excerpt: 使关于界面更加简单。
 ---
 ```
 
