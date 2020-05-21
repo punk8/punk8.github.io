@@ -47,6 +47,34 @@ email: mailto:1041501690@qq.com
 rss: true
 # --- 社交链接 ---
 
+
+
+# --- 站点统计 ---
+# 如果你想开启站点统计，取消下面一行注解，并填写相应统计运营商给的 id，可支持多个同时开启
+#site_statistics: true
+# cnzz (友盟统计)
+#cnzz_id: 1274425891
+# Baidu (百度统计)
+baidu_id: 1b3b1dd10417c649478b6e267a85591f
+# Google Analytics (谷歌统计)
+# google_id:
+# --- 站点统计 ---
+
+
+# # --- 评论设置 ---
+# # 开启评论，取消下面一行注解，并填写相应评论运营商提供的 id，目前仅支持来必力和 gitment
+# comment: true
+# # 来必力 uid
+# # livere_uid:
+# # gitment 用户主，即 GitHub 用户名
+# gitment_owner: punk8
+# # GitHub pages 仓库名，如：showzeng.github.io
+# gitment_repo: punk8.github.io
+# # gitment 提供的对应 id 和 secret
+# gitment_client_id: 76bb22ffd69cb9a2dc11
+# gitment_secret: 1bc48766be80fbcb2802679ab796d76ac4fafe44
+# # --- 评论设置 ---
+
 # theme: jekyll-theme-minimalism
 remote_theme: showzeng/Minimalism
 
